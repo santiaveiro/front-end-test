@@ -1,16 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
-  Typography,
-  Box,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Button,
-  Card,
-  CardMedia,
-  CircularProgress,
+  Typography, Box, MenuItem, Select, FormControl, InputLabel,
+  Button, Card, CardMedia, CircularProgress, Alert
 } from '@mui/material'
 import { fetchProductById } from '../api/products'
 import { useCart } from '../context/CartContext'
@@ -21,6 +13,7 @@ export default function ProductDetails() {
   const [color, setColor] = useState('')
   const [storage, setStorage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [success, setSuccess] = useState(false)
   const { addToCart } = useCart()
 
   useEffect(() => {
@@ -40,12 +33,38 @@ export default function ProductDetails() {
   }, [id])
 
   const handleAddToCart = async () => {
+    const selectedColor = product.options.colors.find(c => c.code === color)
+    const selectedStorage = product.options.storages.find(s => s.code === storage)
+  
     try {
-      await addToCart({ id: product.id, colorCode: color, storageCode: storage })
+      await addToCart({
+        id: product.id,
+        colorCode: color,
+        storageCode: storage,
+        model: product.model,
+        brand: product.brand,
+        imgUrl: product.imgUrl,
+        price: product.price,
+        colorName: selectedColor?.name || '',
+        storageName: selectedStorage?.name || '',
+        cpu: product.cpu,
+        ram: product.ram,
+        os: product.os,
+        displayResolution: product.displayResolution,
+        battery: product.battery,
+        primaryCamera: product.primaryCamera,
+        secondaryCamera: product.secondaryCamera,
+        dimentions: product.dimentions,
+        weight: product.weight
+      })
+      setSuccess(true)
+      setTimeout(() => setSuccess(false), 3000)
     } catch (error) {
       console.error('Error adding product to cart', error)
     }
   }
+  
+  
 
   if (loading) {
     return (
@@ -60,56 +79,27 @@ export default function ProductDetails() {
 
   return (
     <Box sx={{ p: 3, maxWidth: '960px', mx: 'auto' }}>
-      <Link
-        to="/"
-        style={{
-          textDecoration: 'none',
-          marginBottom: '1.5rem',
-          display: 'inline-block',
-          color: '#5e2ca5',
-        }}
-      >
+      <Link to="/" style={{ textDecoration: 'none', marginBottom: '1.5rem', display: 'inline-block', color: '#5e2ca5' }}>
         ← Volver al listado
       </Link>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          gap: 4,
-          alignItems: 'flex-start',
-        }}
-      >
-        {/* Imagen */}
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, alignItems: 'flex-start' }}>
         <Box sx={{ flexBasis: '40%', maxWidth: 360 }}>
           <Card sx={{ p: 1 }}>
             <CardMedia
               component="img"
               image={product.imgUrl}
               alt={product.model}
-              sx={{
-                objectFit: 'contain',
-                width: '100%',
-                height: 'auto',
-                maxHeight: 280,
-              }}
+              sx={{ objectFit: 'contain', width: '100%', height: 'auto', maxHeight: 280 }}
             />
           </Card>
         </Box>
 
-        {/* Detalles + Acciones */}
         <Box sx={{ flexBasis: '60%', display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Card sx={{ p: 2 }}>
-            <Typography variant="h6" fontWeight={600}>
-              {product.brand} {product.model}
-            </Typography>
-            <Typography variant="subtitle1" color="primary" gutterBottom>
-              {product.price} €
-            </Typography>
-
-            <Typography variant="subtitle2" fontWeight={500} gutterBottom>
-              Descripción:
-            </Typography>
+            <Typography variant="h6" fontWeight={600}>{product.brand} {product.model}</Typography>
+            <Typography variant="subtitle1" color="primary" gutterBottom>{product.price} €</Typography>
+            <Typography variant="subtitle2" fontWeight={500} gutterBottom>Descripción:</Typography>
             <ul style={{ paddingLeft: 20, margin: 0 }}>
               <li>CPU: {product.cpu}</li>
               <li>RAM: {product.ram}</li>
@@ -123,6 +113,8 @@ export default function ProductDetails() {
           </Card>
 
           <Card sx={{ p: 2 }}>
+            {success && <Alert severity="success" sx={{ mb: 2 }}>Producto agregado al carrito exitosamente</Alert>}
+
             <FormControl fullWidth sx={{ mb: 2 }}>
               <InputLabel>Color</InputLabel>
               <Select value={color} label="Color" onChange={(e) => setColor(e.target.value)}>
