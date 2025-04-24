@@ -8,11 +8,11 @@ import {
 } from '@mui/material'
 import ProductCard from '../components/ProductCard'
 import { useNavigate } from 'react-router-dom'
+import { useSearchFilter } from '../hooks/useSearchFilter'
 
 export default function ProductList() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -29,8 +29,9 @@ export default function ProductList() {
     load()
   }, [])
 
-  const filteredProducts = products.filter((product) =>
-    `${product.brand} ${product.model}`.toLowerCase().includes(search.toLowerCase())
+  const { search, setSearch, filteredData: filteredProducts } = useSearchFilter(
+    products,
+    ['brand', 'model']
   )
 
   return (
