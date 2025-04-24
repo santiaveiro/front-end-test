@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { fetchAllProducts } from '../api/products'
 import {
   Box,
@@ -37,7 +36,15 @@ export default function ProductList() {
 
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
-      <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
+    
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          mb: 3,
+          pr: '11px',
+        }}
+      >
         <TextField
           placeholder="Buscar por Marca o Modelo"
           value={search}
@@ -45,12 +52,11 @@ export default function ProductList() {
           variant="outlined"
           size="small"
           sx={{
-            width: '100%',
-            maxWidth: 400,
+            width: 400,
             backgroundColor: '#fff',
             borderRadius: 1,
-            transition: 'all 0.3s ease',
             boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+            transform: 'translateX(-4px)', 
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
                 borderColor: 'rgba(0,0,0,0.12)',
@@ -70,6 +76,7 @@ export default function ProductList() {
         />
       </Box>
 
+      
       {loading ? (
         <Box sx={{ textAlign: 'center', mt: 6 }}>
           <CircularProgress />
