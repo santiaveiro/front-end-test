@@ -5,7 +5,6 @@ import {
   TextField,
   Typography,
   CircularProgress,
-  Container,
 } from '@mui/material'
 import ProductCard from '../components/ProductCard'
 import { useNavigate } from 'react-router-dom'
@@ -35,7 +34,7 @@ export default function ProductList() {
   )
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 3, mb: 6 }}>
+    <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
         <TextField
           placeholder="Buscar por Marca o Modelo"
@@ -43,7 +42,29 @@ export default function ProductList() {
           onChange={(e) => setSearch(e.target.value)}
           variant="outlined"
           size="small"
-          sx={{ width: '100%', maxWidth: 400 }}
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            backgroundColor: '#fff',
+            borderRadius: 1,
+            transition: 'all 0.3s ease',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: 'rgba(0,0,0,0.12)',
+              },
+              '&:hover fieldset': {
+                borderColor: 'rgba(13,161,154,0.6)',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: 'rgba(13,161,154,0.9)',
+                borderWidth: '2px',
+              },
+            },
+            '& input': {
+              fontSize: '0.95rem',
+            },
+          }}
         />
       </Box>
 
@@ -58,14 +79,15 @@ export default function ProductList() {
             display: 'flex',
             flexWrap: 'wrap',
             gap: 2,
-            justifyContent: 'flex-start',
+            justifyContent: filteredProducts.length === 1 ? 'center' : 'flex-start',
           }}
         >
           {filteredProducts.map((product) => (
             <Box
               key={product.id}
               sx={{
-                flex: '1 1 calc(25% - 16px)', // 25% - gap to maintain 4 columns
+                flex: '1 1 calc(25% - 16px)',
+                maxWidth: 'calc(25% - 16px)',
                 boxSizing: 'border-box',
               }}
             >
@@ -77,6 +99,6 @@ export default function ProductList() {
           ))}
         </Box>
       )}
-    </Container>
+    </Box>
   )
 }

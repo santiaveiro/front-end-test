@@ -139,9 +139,18 @@ export default function ProductDetails() {
               fullWidth
               onClick={handleAddToCart}
               disabled={!color || !storage}
+              sx={{
+                background: 'rgba(13,161,154,0.9)',
+                '&:hover': {
+                  background: 'rgba(11,145,139,0.95)', 
+                },
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+              }}
             >
               AÑADIR AL CARRITO
             </Button>
+
           </Card>
         </Box>
       </Box>

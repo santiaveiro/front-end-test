@@ -130,12 +130,19 @@ import {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{ mt: 2 }}
                 onClick={() => alert('Implementar proceso de pago')}
-              >
+                sx={{
+                    mt: 2,
+                    background: 'rgba(13,161,154,0.9)',
+                    '&:hover': {
+                    background: 'rgba(11,145,139,0.95)',
+                    },
+                    fontWeight: 600,
+                    letterSpacing: '0.5px',
+                }}
+                >
                 PROCEDER AL PAGO
-              </Button>
-  
+                </Button>
               <Button
                 variant="outlined"
                 color="error"
