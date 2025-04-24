@@ -1,3 +1,4 @@
+import React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { addToCart as apiAddToCart } from '../api/products'
 
@@ -121,3 +122,5 @@ export function CartProvider({ children }) {
 export function useCart() {
   return useContext(CartContext)
 }
+
+export { CartContext }
